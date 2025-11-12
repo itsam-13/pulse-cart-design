@@ -6,10 +6,12 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { products } from '@/data/mockData';
 import { useCart } from '@/contexts/CartContext';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 export default function ProductDetails() {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const { formatPrice } = useCurrency();
   const product = products.find(p => p.id === id);
 
   if (!product) {
@@ -61,16 +63,16 @@ export default function ProductDetails() {
 
           <div className="flex items-center gap-4 mb-6">
             <span className="text-3xl font-bold text-primary">
-              ${product.price.toFixed(2)}
+              {formatPrice(product.price)}
             </span>
             {product.originalPrice && (
               <span className="text-xl text-muted-foreground line-through">
-                ${product.originalPrice.toFixed(2)}
+                {formatPrice(product.originalPrice)}
               </span>
             )}
             {product.originalPrice && (
               <Badge variant="destructive">
-                Save ${(product.originalPrice - product.price).toFixed(2)}
+                Save {formatPrice(product.originalPrice - product.price)}
               </Badge>
             )}
           </div>

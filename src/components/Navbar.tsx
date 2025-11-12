@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { useCart } from '@/contexts/CartContext';
 import { useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import CurrencySelector from '@/components/CurrencySelector';
 
 export default function Navbar() {
   const { itemCount } = useCart();
@@ -33,7 +34,8 @@ export default function Navbar() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <CurrencySelector />
             <Link to="/auth">
               <Button variant="ghost" size="icon">
                 <User className="h-5 w-5" />

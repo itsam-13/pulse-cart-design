@@ -35,9 +35,9 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     const saved = localStorage.getItem('selectedCountry');
     if (saved) {
       const savedCountry = JSON.parse(saved);
-      return countries.find(c => c.code === savedCountry.code) || countries[0];
+      return countries.find(c => c.code === savedCountry.code) || countries[6];
     }
-    return countries[0]; // Default to US
+    return countries[6]; // Default to India
   });
 
   useEffect(() => {

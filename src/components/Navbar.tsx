@@ -11,14 +11,14 @@ export default function Navbar() {
   const { itemCount } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const categories = ['Electronics', 'Fashion', 'Home & Garden', 'Sports', 'Books'];
+  const categories = ['Pens & Pencils', 'Notebooks', 'Art Supplies', 'Office Supplies', 'School Bags'];
 
   return (
     <nav className="sticky top-0 z-50 bg-background border-b">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="text-2xl font-bold text-primary">
-            ShopHub
+            Abes Shopper
           </Link>
 
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">

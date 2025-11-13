@@ -1,159 +1,159 @@
 import { Product, Category } from '@/types/product';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Electronics', image: 'https://images.unsplash.com/photo-1498049794561-7780e7231661?w=400', count: 156 },
-  { id: '2', name: 'Fashion', image: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=400', count: 243 },
-  { id: '3', name: 'Home & Garden', image: 'https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=400', count: 189 },
-  { id: '4', name: 'Sports', image: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400', count: 98 },
+  { id: '1', name: 'Pens & Pencils', image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=400', count: 156 },
+  { id: '2', name: 'Notebooks', image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?w=400', count: 243 },
+  { id: '3', name: 'Art Supplies', image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400', count: 189 },
+  { id: '4', name: 'Office Supplies', image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=400', count: 98 },
 ];
 
 export const products: Product[] = [
   {
     id: '1',
-    name: 'Wireless Noise-Cancelling Headphones',
-    price: 299.99,
-    originalPrice: 399.99,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-    category: 'electronics',
+    name: 'Premium Gel Pen Set - 12 Colors',
+    price: 249,
+    originalPrice: 349,
+    image: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500',
+    category: 'pens & pencils',
     rating: 4.5,
     reviews: 328,
-    description: 'Premium wireless headphones with active noise cancellation, 30-hour battery life, and superior sound quality.',
+    description: 'Smooth writing gel pen set with 12 vibrant colors. Perfect for note-taking, journaling, and art projects.',
     stock: 45,
-    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'],
+    images: ['https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=500'],
     specifications: {
-      'Battery Life': '30 hours',
-      'Connectivity': 'Bluetooth 5.0',
-      'Weight': '250g',
-      'Warranty': '2 years'
+      'Colors': '12',
+      'Tip Size': '0.7mm',
+      'Ink Type': 'Gel',
+      'Brand': 'WritePro'
     }
   },
   {
     id: '2',
-    name: 'Smart Fitness Watch',
-    price: 199.99,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500',
-    category: 'electronics',
+    name: 'A4 Spiral Notebook Pack of 5',
+    price: 399,
+    image: 'https://images.unsplash.com/photo-1517842645767-c639042777db?w=500',
+    category: 'notebooks',
     rating: 4.8,
     reviews: 512,
-    description: 'Track your fitness goals with this advanced smartwatch featuring heart rate monitoring and GPS.',
+    description: 'High-quality ruled notebooks with 200 pages each. Durable spiral binding and thick paper.',
     stock: 67,
-    images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'],
+    images: ['https://images.unsplash.com/photo-1517842645767-c639042777db?w=500'],
     specifications: {
-      'Display': '1.4" AMOLED',
-      'Battery': '7 days',
-      'Water Resistance': '5ATM',
-      'Sensors': 'Heart Rate, GPS, Accelerometer'
+      'Size': 'A4',
+      'Pages': '200 per notebook',
+      'Paper Quality': '70 GSM',
+      'Binding': 'Spiral'
     }
   },
   {
     id: '3',
-    name: 'Premium Leather Backpack',
-    price: 149.99,
-    originalPrice: 199.99,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500',
-    category: 'fashion',
+    name: 'Watercolor Paint Set - 24 Colors',
+    price: 599,
+    originalPrice: 799,
+    image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500',
+    category: 'art supplies',
     rating: 4.6,
     reviews: 201,
-    description: 'Handcrafted leather backpack with laptop compartment and multiple pockets.',
+    description: 'Professional watercolor paint set with 24 vibrant colors. Includes 2 brushes and mixing palette.',
     stock: 34,
-    images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500'],
+    images: ['https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500'],
     specifications: {
-      'Material': 'Genuine Leather',
-      'Laptop Size': 'Up to 15"',
-      'Dimensions': '45x30x15cm',
-      'Weight': '1.2kg'
+      'Colors': '24',
+      'Type': 'Watercolor',
+      'Includes': 'Brushes & Palette',
+      'Grade': 'Professional'
     }
   },
   {
     id: '4',
-    name: 'Minimalist Running Shoes',
-    price: 89.99,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500',
-    category: 'sports',
+    name: 'Graphite Pencil Set - HB to 6B',
+    price: 179,
+    image: 'https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=500',
+    category: 'pens & pencils',
     rating: 4.4,
     reviews: 445,
-    description: 'Lightweight running shoes with responsive cushioning and breathable mesh upper.',
+    description: 'Professional sketching pencil set with varying grades. Ideal for artists and students.',
     stock: 89,
-    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500'],
+    images: ['https://images.unsplash.com/photo-1599058917212-d750089bc07e?w=500'],
     specifications: {
-      'Weight': '220g',
-      'Drop': '8mm',
-      'Upper': 'Breathable Mesh',
-      'Sole': 'Rubber'
+      'Quantity': '12 pencils',
+      'Grades': 'HB, 2B, 4B, 6B',
+      'Type': 'Graphite',
+      'Brand': 'ArtPro'
     }
   },
   {
     id: '5',
-    name: 'Portable Bluetooth Speaker',
-    price: 79.99,
-    originalPrice: 99.99,
-    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500',
-    category: 'electronics',
+    name: 'Sticky Notes Combo Pack',
+    price: 149,
+    originalPrice: 199,
+    image: 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=500',
+    category: 'office supplies',
     rating: 4.7,
     reviews: 289,
-    description: 'Waterproof portable speaker with 360° sound and 12-hour battery life.',
+    description: 'Colorful sticky notes in multiple sizes. Perfect for reminders and organization.',
     stock: 156,
-    images: ['https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500'],
+    images: ['https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?w=500'],
     specifications: {
-      'Battery': '12 hours',
-      'Water Resistance': 'IPX7',
-      'Connectivity': 'Bluetooth 5.0',
-      'Power Output': '20W'
+      'Sheets': '600 total',
+      'Sizes': '3 different',
+      'Colors': '6 colors',
+      'Adhesive': 'Repositionable'
     }
   },
   {
     id: '6',
-    name: 'Designer Sunglasses',
-    price: 159.99,
-    image: 'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500',
-    category: 'fashion',
+    name: 'Premium Sketchbook A3 Size',
+    price: 449,
+    image: 'https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=500',
+    category: 'notebooks',
     rating: 4.9,
     reviews: 178,
-    description: 'Stylish sunglasses with UV400 protection and polarized lenses.',
+    description: 'Large format sketchbook with thick acid-free paper. Perfect for all drawing media.',
     stock: 42,
-    images: ['https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=500'],
+    images: ['https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?w=500'],
     specifications: {
-      'UV Protection': 'UV400',
-      'Lens': 'Polarized',
-      'Frame Material': 'Acetate',
-      'Case Included': 'Yes'
+      'Size': 'A3',
+      'Pages': '100',
+      'Paper': '120 GSM Acid-free',
+      'Binding': 'Hardbound'
     }
   },
   {
     id: '7',
-    name: 'Ceramic Plant Pot Set',
-    price: 39.99,
-    image: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500',
-    category: 'home & garden',
+    name: 'Acrylic Paint Set - 18 Colors',
+    price: 699,
+    image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500',
+    category: 'art supplies',
     rating: 4.3,
     reviews: 134,
-    description: 'Set of 3 handmade ceramic plant pots with drainage holes and saucers.',
+    description: 'Vibrant acrylic paints suitable for canvas, wood, and paper. Quick-drying formula.',
     stock: 78,
-    images: ['https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=500'],
+    images: ['https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=500'],
     specifications: {
-      'Set Includes': '3 pots',
-      'Sizes': 'Small, Medium, Large',
-      'Material': 'Ceramic',
-      'Drainage': 'Yes'
+      'Colors': '18',
+      'Volume': '12ml per tube',
+      'Type': 'Acrylic',
+      'Finish': 'Matte'
     }
   },
   {
     id: '8',
-    name: 'Yoga Mat Premium',
-    price: 49.99,
-    originalPrice: 69.99,
-    image: 'https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500',
-    category: 'sports',
+    name: 'School Backpack with Organizer',
+    price: 899,
+    originalPrice: 1199,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500',
+    category: 'school bags',
     rating: 4.6,
     reviews: 267,
-    description: 'Eco-friendly yoga mat with excellent grip and cushioning.',
+    description: 'Ergonomic school backpack with multiple compartments. Padded straps and laptop sleeve.',
     stock: 92,
-    images: ['https://images.unsplash.com/photo-1601925260368-ae2f83cf8b7f?w=500'],
+    images: ['https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500'],
     specifications: {
-      'Thickness': '6mm',
-      'Material': 'TPE',
-      'Dimensions': '183x61cm',
-      'Weight': '1kg'
+      'Capacity': '30L',
+      'Laptop Size': 'Up to 15.6"',
+      'Material': 'Water-resistant',
+      'Compartments': '5'
     }
   }
 ];

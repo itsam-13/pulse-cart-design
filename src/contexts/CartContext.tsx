@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { CartItem, Product } from '@/types/product';
 import { toast } from '@/hooks/use-toast';
 
@@ -15,7 +15,28 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    if (typeof window === 'undefined') return [];
+
+    try {
+      const stored = localStorage.getItem('cart');
+      if (!stored) return [];
+      const parsed = JSON.parse(stored) as CartItem[];
+      if (!Array.isArray(parsed)) return [];
+      return parsed;
+    } catch {
+      return [];
+    }
+  });
+
+  // Persist cart to localStorage so it survives refresh.
+  useEffect(() => {
+    try {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    } catch {
+      // Ignore storage errors (e.g., private mode or quota exceeded)
+    }
+  }, [cart]);
 
   const addToCart = (product: Product) => {
     const hasSimilarItem = cart.some(

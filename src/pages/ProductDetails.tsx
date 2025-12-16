@@ -74,6 +74,21 @@ export default function ProductDetails() {
   const previousPrice = prices[prices.length - 2] ?? currentPrice;
   const isRising = currentPrice >= previousPrice;
 
+  // Simple rule-based badge for current price vs history.
+  let priceBadgeLabel = 'Good Time to Buy';
+  let priceBadgeVariant: 'default' | 'outline' | 'destructive' = 'default';
+
+  if (currentPrice <= lowestPrice * 1.05) {
+    priceBadgeLabel = 'Good Time to Buy';
+    priceBadgeVariant = 'default';
+  } else if (currentPrice >= highestPrice * 0.95) {
+    priceBadgeLabel = 'High Price Today';
+    priceBadgeVariant = 'destructive';
+  } else {
+    priceBadgeLabel = 'Wait – Price May Drop';
+    priceBadgeVariant = 'outline';
+  }
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
@@ -110,7 +125,7 @@ export default function ProductDetails() {
             <span className="text-muted-foreground">({product.reviews} reviews)</span>
           </div>
 
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center gap-4 mb-2">
             <span className="text-3xl font-bold text-primary">
               {formatPrice(product.price)}
             </span>
@@ -124,6 +139,11 @@ export default function ProductDetails() {
                 Save {formatPrice(product.originalPrice - product.price)}
               </Badge>
             )}
+          </div>
+          <div className="mb-4">
+            <Badge variant={priceBadgeVariant} className="text-xs md:text-sm">
+              {priceBadgeLabel}
+            </Badge>
           </div>
 
           {hasPriceAlert && !showPriceDropAlert && (

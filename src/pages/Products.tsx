@@ -8,6 +8,7 @@ import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import { Input } from '@/components/ui/input';
 
 export default function Products() {
   const [searchParams] = useSearchParams();
@@ -19,15 +20,33 @@ export default function Products() {
     categoryParam ? [categoryParam] : []
   );
   const [minRating, setMinRating] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
   const { formatPrice } = useCurrency();
 
-  const categories = ['electronics', 'fashion', 'home & garden', 'sports'];
+  const categories = useMemo(
+    () =>
+      Array.from(new Set(products.map(p => p.category))).sort((a, b) =>
+        a.localeCompare(b),
+      ),
+    [],
+  );
+
+  const formatCategoryLabel = (category: string) =>
+    category
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
 
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
     if (selectedCategories.length > 0) {
       filtered = filtered.filter(p => selectedCategories.includes(p.category));
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.trim().toLowerCase();
+      filtered = filtered.filter(p => p.name.toLowerCase().includes(q));
     }
 
     filtered = filtered.filter(
@@ -51,7 +70,7 @@ export default function Products() {
     }
 
     return filtered;
-  }, [selectedCategories, priceRange, minRating, sortBy]);
+  }, [selectedCategories, priceRange, minRating, sortBy, searchQuery]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev =>
@@ -88,7 +107,7 @@ export default function Products() {
                         htmlFor={category}
                         className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize cursor-pointer"
                       >
-                        {category}
+                        {formatCategoryLabel(category)}
                       </label>
                     </div>
                   ))}
@@ -144,21 +163,30 @@ export default function Products() {
 
         {/* Products Grid */}
         <div className="lg:col-span-3">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col gap-4 mb-6 sm:flex-row sm:items-center sm:justify-between">
             <p className="text-muted-foreground">
               Showing {filteredProducts.length} products
             </p>
-            <Select value={sortBy} onValueChange={setSortBy}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="featured">Featured</SelectItem>
-                <SelectItem value="price-low">Price: Low to High</SelectItem>
-                <SelectItem value="price-high">Price: High to Low</SelectItem>
-                <SelectItem value="rating">Highest Rated</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4 w-full sm:w-auto">
+              <Input
+                type="search"
+                placeholder="Search products..."
+                className="w-full sm:w-64"
+                value={searchQuery}
+                onChange={e => setSearchQuery(e.target.value)}
+              />
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full sm:w-[180px]">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="featured">Featured</SelectItem>
+                  <SelectItem value="price-low">Price: Low to High</SelectItem>
+                  <SelectItem value="price-high">Price: High to Low</SelectItem>
+                  <SelectItem value="rating">Highest Rated</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {filteredProducts.length > 0 ? (

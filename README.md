@@ -1,73 +1,100 @@
-# Welcome to your Lovable project
+## PulseCart – Smart E‑Commerce Frontend
 
-## Project info
+BuyMetrics (PulseCart) is a **frontend-only smart e‑commerce experience** built with React, TypeScript, Tailwind CSS, and shadcn‑ui.  
+It focuses on **price intelligence, budget awareness, and cart insights** while remaining fully mock‑data driven (no backend).
 
-**URL**: https://lovable.dev/projects/fe270f86-6cdc-4625-a70e-a0dc84f16c1e
+### Features
 
-## How can I edit this code?
+- **Product browsing**
+  - Responsive product grid with hover effects and clean price display
+  - Product detail pages with specs, reviews section, and related UX
+  - Category filtering, price range slider, rating filter, and text search
+  - Sorting by featured, price (low → high, high → low), and rating
 
-There are several ways of editing your application.
+- **Smart cart & budget awareness**
+  - Centralized cart state via React Context with localStorage persistence
+  - Quantity controls, subtotal, tax estimate, and grand total
+  - Remove‑item confirmation dialog and toasts for add/update/remove
+  - Monthly budget input with:
+    - Budget health meter / progress bar
+    - Warnings when near or over budget
+    - Navbar budget pill and spending insights (history + category pie chart)
 
-**Use Lovable**
+- **Price intelligence & alerts**
+  - Per‑product price history chart (static/mock data)
+  - Lowest / highest / current price metrics
+  - Rule‑based badges: **Good Time to Buy**, **Wait – Price May Drop**, **High Price Today**
+  - Frontend‑only “notify me if price drops” alerts using `localStorage`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/fe270f86-6cdc-4625-a70e-a0dc84f16c1e) and start prompting.
+- **UX enhancements**
+  - Currency selector with country flags and automatic price conversion
+  - Newbie promo marquee banner and polished navbar/footer
+  - Smooth hover/transition effects using Tailwind utilities
 
-Changes made via Lovable will be committed automatically to this repo.
+### Tech Stack
 
-**Use your preferred IDE**
+- **Framework**: React 18, TypeScript
+- **Build Tooling**: Vite
+- **Styling**: Tailwind CSS, custom design tokens in `index.css`
+- **UI Library**: shadcn‑ui (Radix primitives)
+- **State Management**: React Context (Cart, Currency)
+- **Charts**: Recharts wrapped in a reusable `ChartContainer`
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Project Structure (high level)
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- `src/components` – Reusable UI + feature components (navbar, footer, product card, currency selector, shadcn primitives)
+- `src/pages` – Route‑level pages (`Home`, `Products`, `ProductDetails`, `Cart`, `Checkout`, etc.)
+- `src/contexts` – `CartContext`, `CurrencyContext`
+- `src/hooks` – Custom hooks (e.g. toast, mobile detection)
+- `src/data` – Mock product and category data
+- `src/types` – Shared TypeScript types (`Product`, `CartItem`, etc.)
+- `src/lib` – Utilities (e.g. Tailwind `cn` helper)
 
-Follow these steps:
+### Getting Started
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+#### Prerequisites
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+- Node.js 18+
+- npm (or pnpm / yarn) installed
 
-# Step 3: Install the necessary dependencies.
-npm i
+#### Installation
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+git clone <REPO_URL>
+cd pulse-cart-design
+npm install
+```
+
+#### Running the app
+
+```bash
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+Then open the URL shown in the terminal (typically `http://localhost:5173`).
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Scripts
 
-**Use GitHub Codespaces**
+- `npm run dev` – Start Vite dev server
+- `npm run build` – Production build
+- `npm run preview` – Preview the production build
+- `npm run lint` – Run ESLint checks
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Screenshots (placeholders)
 
-## What technologies are used for this project?
+- `docs/screenshots/home.png` – Home / hero + featured products  
+- `docs/screenshots/products.png` – Product listing with filters/search  
+- `docs/screenshots/product-details.png` – Product details + price intelligence  
+- `docs/screenshots/cart.png` – Cart with budget awareness & recommendations  
 
-This project is built with:
+_(Create a `docs/screenshots` folder and capture real screenshots when ready.)_
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Future Improvements
 
-## How can I deploy this project?
+- Add pagination or infinite scroll for large product catalogs
++- Enhance search with fuzzy matching and multi‑field filters
++- Add wishlists and simple compare‑products view (still frontend‑only)
++- Extract more UI primitives into dedicated components for design consistency
++- Hook up to a real backend or headless commerce API (when allowed)
 
-Simply open [Lovable](https://lovable.dev/projects/fe270f86-6cdc-4625-a70e-a0dc84f16c1e) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is designed to be **interview‑ready**: strongly typed, modular, and easy to extend while remaining fully mock‑data based.

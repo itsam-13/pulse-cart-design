@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 export default function Products() {
   const [searchParams] = useSearchParams();
@@ -18,6 +19,7 @@ export default function Products() {
     categoryParam ? [categoryParam] : []
   );
   const [minRating, setMinRating] = useState(0);
+  const { formatPrice } = useCurrency();
 
   const categories = ['electronics', 'fashion', 'home & garden', 'sports'];
 
@@ -105,8 +107,8 @@ export default function Products() {
                   className="mb-2"
                 />
                 <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>${priceRange[0]}</span>
-                  <span>${priceRange[1]}</span>
+                  <span>{formatPrice(priceRange[0])}</span>
+                  <span>{formatPrice(priceRange[1])}</span>
                 </div>
               </div>
 

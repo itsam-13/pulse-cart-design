@@ -9,6 +9,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
+import ProductCard from '@/components/ProductCard';
+import { products } from '@/data/mockData';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, total } = useCart();
@@ -71,6 +73,16 @@ export default function Cart() {
       </div>
     );
   }
+
+  const cartProductIds = new Set(cart.map(item => item.id));
+  const cartCategories = new Set(cart.map(item => item.category));
+
+  const recommendedProducts = products
+    .filter(
+      product =>
+        cartCategories.has(product.category) && !cartProductIds.has(product.id),
+    )
+    .slice(0, 6);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -247,6 +259,20 @@ export default function Cart() {
           </Card>
         </div>
       </div>
+
+      {recommendedProducts.length > 0 && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold mb-2">Recommended for you</h2>
+          <p className="text-sm text-muted-foreground mb-6">
+            Based on items in your cart and similar categories.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recommendedProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

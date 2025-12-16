@@ -1,24 +1,37 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Search, Menu } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/contexts/CartContext';
-import { useState } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import CurrencySelector from '@/components/CurrencySelector';
+import { useCurrency } from '@/contexts/CurrencyContext';
 
 export default function Navbar() {
   const { itemCount } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
+  const { formatPrice } = useCurrency();
+  const [monthlyBudgetUSD, setMonthlyBudgetUSD] = useState<number | null>(null);
 
   const categories = ['Pens & Pencils', 'Notebooks', 'Art Supplies', 'Office Supplies', 'School Bags'];
+
+  useEffect(() => {
+    const saved = localStorage.getItem('monthlyBudgetUSD');
+    if (!saved) return;
+
+    const parsed = parseFloat(saved);
+    if (!Number.isNaN(parsed) && parsed > 0) {
+      setMonthlyBudgetUSD(parsed);
+    }
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 bg-background border-b">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="text-2xl font-bold text-primary">
-            Abes Shopper
+            BuyMetrics
           </Link>
 
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">
@@ -35,6 +48,13 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center gap-2">
+            {monthlyBudgetUSD !== null && (
+              <div className="hidden sm:flex items-center gap-1 rounded-full border px-3 py-1 text-xs text-muted-foreground">
+                <Wallet className="h-3 w-3 text-primary" />
+                <span className="font-medium">Limit:</span>
+                <span>{formatPrice(monthlyBudgetUSD)}</span>
+              </div>
+            )}
             <CurrencySelector />
             <Link to="/auth">
               <Button variant="ghost" size="icon">
@@ -84,6 +104,23 @@ export default function Navbar() {
               {category}
             </Link>
           ))}
+        </div>
+      </div>
+
+      {/* Newbie discount banner */}
+      <div className="bg-accent text-accent-foreground text-xs sm:text-sm">
+        <div className="container mx-auto px-4 py-1">
+          <div className="marquee-container">
+            <div className="marquee-content flex items-center gap-8">
+              <span className="font-semibold">
+                New to BuyMetrics? Use coupon code <span className="underline">NEWBIE10</span> for
+                10% off your first purchase!
+              </span>
+              <span className="font-semibold">
+                Limited time offer — apply <span className="underline">NEWBIE10</span> at checkout.
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </nav>

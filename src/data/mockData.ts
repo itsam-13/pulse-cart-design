@@ -708,5 +708,153 @@ export const products: Product[] = [
       'Size': '183x61cm',
       'Includes': 'Carry bag'
     }
+  },
+  {
+    id: '39',
+    name: 'Executive Rollerball Pen',
+    price: 19,
+    originalPrice: 25,
+    image: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=500',
+    category: 'pens & pencils',
+    rating: 4.6,
+    reviews: 192,
+    description: 'Metal-body rollerball pen with smooth ink flow and gift-ready box.',
+    stock: 96,
+    images: ['https://images.unsplash.com/photo-1518546305927-5a555bb7020d?w=500'],
+    specifications: {
+      'Tip Size': '0.7mm',
+      'Body': 'Metal',
+      'Ink': 'Black',
+      'Refillable': 'Yes'
+    }
+  },
+  {
+    id: '40',
+    name: 'Softcover Study Notebook Pack of 3',
+    price: 14,
+    image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=500',
+    category: 'notebooks',
+    rating: 4.7,
+    reviews: 241,
+    description: 'Lightweight softcover notebooks, ideal for class notes and daily planning.',
+    stock: 154,
+    images: ['https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=500'],
+    specifications: {
+      'Size': 'A5',
+      'Pages': '120 per notebook',
+      'Paper': 'Ruled 70 GSM',
+      'Pack': '3'
+    }
+  },
+  {
+    id: '41',
+    name: 'Brush Pen Calligraphy Set',
+    price: 24,
+    originalPrice: 32,
+    image: 'https://images.unsplash.com/photo-1520697830682-bbb6e85e2b1b?w=500',
+    category: 'art supplies',
+    rating: 4.6,
+    reviews: 198,
+    description: 'Flexible brush pens for lettering, calligraphy, and illustration.',
+    stock: 88,
+    images: ['https://images.unsplash.com/photo-1520697830682-bbb6e85e2b1b?w=500'],
+    specifications: {
+      'Pens': '18',
+      'Tip': 'Brush',
+      'Ink': 'Water-based',
+      'Use': 'Calligraphy, Lettering'
+    }
+  },
+  {
+    id: '42',
+    name: 'Desk Mat Mousepad XL',
+    price: 29,
+    image: 'https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=500',
+    category: 'office supplies',
+    rating: 4.8,
+    reviews: 329,
+    description: 'Extended desk mat for keyboard and mouse with anti-slip base.',
+    stock: 137,
+    images: ['https://images.unsplash.com/photo-1545239351-1141bd82e8a6?w=500'],
+    specifications: {
+      'Size': '90 x 40 cm',
+      'Material': 'Rubber + Fabric',
+      'Base': 'Anti-slip',
+      'Edges': 'Stitched'
+    }
+  },
+  {
+    id: '43',
+    name: 'Noise Cancelling Headphones',
+    price: 89,
+    originalPrice: 120,
+    image: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=500',
+    category: 'electronics',
+    rating: 4.6,
+    reviews: 512,
+    description: 'Over-ear wireless headphones with active noise cancelling and deep bass.',
+    stock: 73,
+    images: ['https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=500'],
+    specifications: {
+      'Playback': '30 hours',
+      'Connectivity': 'Bluetooth 5.0',
+      'Charging': 'USB-C',
+      'Features': 'ANC, Foldable'
+    }
+  },
+  {
+    id: '44',
+    name: 'Minimalist Analog Watch',
+    price: 49,
+    image: 'https://images.unsplash.com/photo-1513789181297-6acb8a57fab1?w=500',
+    category: 'fashion',
+    rating: 4.5,
+    reviews: 203,
+    description: 'Slim analog wristwatch with leather strap and classic dial.',
+    stock: 119,
+    images: ['https://images.unsplash.com/photo-1513789181297-6acb8a57fab1?w=500'],
+    specifications: {
+      'Movement': 'Quartz',
+      'Strap': 'Genuine Leather',
+      'Water Resistance': '3 ATM',
+      'Dial Size': '40mm'
+    }
+  },
+  {
+    id: '45',
+    name: 'Cotton Bedsheet Set Queen Size',
+    price: 59,
+    originalPrice: 75,
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500',
+    category: 'home & garden',
+    rating: 4.7,
+    reviews: 287,
+    description: 'Soft 100% cotton bedsheet set with two pillow covers.',
+    stock: 102,
+    images: ['https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500'],
+    specifications: {
+      'Size': 'Queen',
+      'Thread Count': '300 TC',
+      'Pieces': '1 Sheet + 2 Pillow Covers',
+      'Pattern': 'Solid'
+    }
+  },
+  {
+    id: '46',
+    name: 'Adjustable Dumbbell Pair 5kg',
+    price: 39,
+    image: 'https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?w=500',
+    category: 'sports',
+    rating: 4.6,
+    reviews: 254,
+    description: 'Pair of adjustable dumbbells ideal for home workouts and strength training.',
+    stock: 91,
+    images: ['https://images.unsplash.com/photo-1517832207067-4db24a2ae47c?w=500'],
+    specifications: {
+      'Weight': '2 x 5kg',
+      'Plates': 'Detachable',
+      'Grip': 'Textured',
+      'Use': 'Home gym'
+    }
   }
 ];

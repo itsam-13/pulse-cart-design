@@ -1,23 +1,23 @@
 import { useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
-import { products } from '@/data/mockData';
+import ProductFilters from '@/components/ProductFilters';
+import { products } from '@/data/products';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { Input } from '@/components/ui/input';
 
 export default function Products() {
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
-  
-  const [sortBy, setSortBy] = useState('featured');
+
+  const [sortBy, setSortBy] = useState('price-low');
   const [priceRange, setPriceRange] = useState([0, 500]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>(
-    categoryParam ? [categoryParam] : []
+  const [selectedCategory, setSelectedCategory] = useState<string>(
+    categoryParam || ''
   );
   const [minRating, setMinRating] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -40,8 +40,8 @@ export default function Products() {
   const filteredProducts = useMemo(() => {
     let filtered = [...products];
 
-    if (selectedCategories.length > 0) {
-      filtered = filtered.filter(p => selectedCategories.includes(p.category));
+    if (selectedCategory) {
+      filtered = filtered.filter(p => p.category === selectedCategory);
     }
 
     if (searchQuery.trim()) {
@@ -62,23 +62,14 @@ export default function Products() {
       case 'price-high':
         filtered.sort((a, b) => b.price - a.price);
         break;
-      case 'rating':
-        filtered.sort((a, b) => b.rating - a.rating);
-        break;
       default:
         break;
     }
 
     return filtered;
-  }, [selectedCategories, priceRange, minRating, sortBy, searchQuery]);
+  }, [selectedCategory, priceRange, minRating, sortBy, searchQuery]);
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories(prev =>
-      prev.includes(category)
-        ? prev.filter(c => c !== category)
-        : [...prev, category]
-    );
-  };
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -95,23 +86,19 @@ export default function Products() {
               {/* Category Filter */}
               <div>
                 <h3 className="font-semibold mb-3">Category</h3>
-                <div className="space-y-2">
-                  {categories.map(category => (
-                    <div key={category} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={category}
-                        checked={selectedCategories.includes(category)}
-                        onCheckedChange={() => toggleCategory(category)}
-                      />
-                      <label
-                        htmlFor={category}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 capitalize cursor-pointer"
-                      >
+                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="All Categories" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="">All Categories</SelectItem>
+                    {categories.map(category => (
+                      <SelectItem key={category} value={category}>
                         {formatCategoryLabel(category)}
-                      </label>
-                    </div>
-                  ))}
-                </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
 
               {/* Price Range */}
@@ -150,7 +137,7 @@ export default function Products() {
                 variant="outline"
                 className="w-full"
                 onClick={() => {
-                  setSelectedCategories([]);
+                  setSelectedCategory('');
                   setPriceRange([0, 500]);
                   setMinRating(0);
                 }}

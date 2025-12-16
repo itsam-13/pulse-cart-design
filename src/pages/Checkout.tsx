@@ -10,6 +10,7 @@ import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from '@/hooks/use-toast';
 import { CreditCard, Truck } from 'lucide-react';
+import type { CartItem } from '@/types/product';
 
 export default function Checkout() {
   const navigate = useNavigate();
@@ -19,6 +20,37 @@ export default function Checkout() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    // Persist a simple buying history snapshot in localStorage (USD-based).
+    try {
+      const raw = localStorage.getItem('purchaseHistory');
+      const parsed: {
+        id: string;
+        date: string;
+        items: Pick<CartItem, 'id' | 'name' | 'category' | 'price' | 'quantity'>[];
+        totalUSD: number;
+      }[] = raw ? JSON.parse(raw) : [];
+
+      const orderTotalUSD = total * 1.1; // including the same 10% tax used in UI
+
+      parsed.push({
+        id: `${Date.now()}`,
+        date: new Date().toISOString(),
+        items: cart.map(item => ({
+          id: item.id,
+          name: item.name,
+          category: item.category,
+          price: item.price,
+          quantity: item.quantity,
+        })),
+        totalUSD: orderTotalUSD,
+      });
+
+      localStorage.setItem('purchaseHistory', JSON.stringify(parsed));
+    } catch {
+      // If anything goes wrong, skip persisting history silently.
+    }
+
     toast({
       title: "Order Placed Successfully!",
       description: "Thank you for your purchase. We'll send you a confirmation email shortly.",

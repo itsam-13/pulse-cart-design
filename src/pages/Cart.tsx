@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { Pie, PieChart, Cell, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -17,6 +18,15 @@ export default function Cart() {
   const { formatPrice, convertPrice, selectedCountry } = useCurrency();
 
   const [monthlyBudgetUSD, setMonthlyBudgetUSD] = useState<number>(0);
+  const [purchaseHistory, setPurchaseHistory] = useState<
+    {
+      id: string;
+      date: string;
+      items: { id: string; name: string; category: string; price: number; quantity: number }[];
+      totalUSD: number;
+    }[]
+  >([]);
+  const [categorySpendData, setCategorySpendData] = useState<{ name: string; value: number }[]>([]);
 
   useEffect(() => {
     const saved = localStorage.getItem('monthlyBudgetUSD');
@@ -25,6 +35,43 @@ export default function Cart() {
       if (!Number.isNaN(parsed)) {
         setMonthlyBudgetUSD(parsed);
       }
+    }
+  }, []);
+
+  useEffect(() => {
+    // Load simple buying history from localStorage and aggregate by category (USD-based).
+    try {
+      const raw = localStorage.getItem('purchaseHistory');
+      if (!raw) return;
+
+      const history: {
+        id: string;
+        date: string;
+        items: { id: string; name: string; category: string; price: number; quantity: number }[];
+        totalUSD: number;
+      }[] = JSON.parse(raw);
+
+      setPurchaseHistory(history);
+
+      const spendByCategory = new Map<string, number>();
+      history.forEach(order => {
+        order.items.forEach(item => {
+          const amount = item.price * item.quantity;
+          spendByCategory.set(
+            item.category,
+            (spendByCategory.get(item.category) ?? 0) + amount,
+          );
+        });
+      });
+
+      const data = Array.from(spendByCategory.entries()).map(([name, value]) => ({
+        name,
+        value,
+      }));
+
+      setCategorySpendData(data);
+    } catch {
+      // Ignore malformed data
     }
   }, []);
 
@@ -259,6 +306,107 @@ export default function Cart() {
           </Card>
         </div>
       </div>
+
+      {purchaseHistory.length > 0 && categorySpendData.length > 0 && monthlyBudgetUSD > 0 && (
+        <section className="mt-12">
+          <h2 className="text-2xl font-bold mb-2">Spending insights</h2>
+          <p className="text-sm text-muted-foreground mb-6">
+            Track how much of your monthly budget you&apos;ve spent in each category.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card>
+              <CardContent className="pt-6 space-y-4">
+                <h3 className="text-lg font-semibold">Recent purchases</h3>
+                <div className="space-y-3 max-h-60 overflow-y-auto pr-1">
+                  {purchaseHistory
+                    .slice(-5)
+                    .reverse()
+                    .map(order => {
+                      const date = new Date(order.date);
+                      const totalInSelected = convertPrice(order.totalUSD);
+                      return (
+                        <div key={order.id} className="border-b border-border pb-2 last:border-0">
+                          <p className="text-xs text-muted-foreground">
+                            {date.toLocaleDateString()} • Order #{order.id.slice(-4)}
+                          </p>
+                          <p className="text-sm font-medium">
+                            {formatPrice(order.totalUSD)}
+                            <span className="ml-2 text-xs text-muted-foreground">
+                              (~{formatPrice(order.totalUSD)})
+                            </span>
+                          </p>
+                          <p className="text-xs text-muted-foreground mt-1 truncate">
+                            {order.items.map(item => item.name).join(', ')}
+                          </p>
+                        </div>
+                      );
+                    })}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardContent className="pt-6">
+                <h3 className="text-lg font-semibold mb-2">Budget by category</h3>
+                <p className="text-xs text-muted-foreground mb-4">
+                  Slice size shows how much of your total monthly budget each category has used so
+                  far.
+                </p>
+                <div className="h-64">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={categorySpendData}
+                        dataKey="value"
+                        nameKey="name"
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={40}
+                        outerRadius={70}
+                        paddingAngle={4}
+                      >
+                        {categorySpendData.map((entry, index) => {
+                          const colors = [
+                            '#2563eb',
+                            '#f97316',
+                            '#22c55e',
+                            '#a855f7',
+                            '#ec4899',
+                            '#eab308',
+                          ];
+                          return (
+                            <Cell
+                              key={entry.name}
+                              fill={colors[index % colors.length]}
+                              stroke="#ffffff"
+                              strokeWidth={1}
+                            />
+                          );
+                        })}
+                      </Pie>
+                      <Tooltip
+                        formatter={(value: number, name: string) => {
+                          const amountUSD = value;
+                          const percentOfBudget =
+                            monthlyBudgetUSD > 0
+                              ? ((amountUSD / monthlyBudgetUSD) * 100).toFixed(1)
+                              : '0';
+                          return [
+                            `${formatPrice(amountUSD)} (${percentOfBudget}% of budget)`,
+                            name,
+                          ];
+                        }}
+                      />
+                      <Legend />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
 
       {recommendedProducts.length > 0 && (
         <section className="mt-12">

@@ -5,20 +5,92 @@ export interface Country {
   name: string;
   currency: string;
   currencySymbol: string;
+  /** Emoji flag for the country, used in the UI. */
+  flag: string;
   conversionRate: number; // Rate relative to USD
 }
 
 export const countries: Country[] = [
-  { code: 'US', name: 'United States', currency: 'USD', currencySymbol: '$', conversionRate: 1 },
-  { code: 'GB', name: 'United Kingdom', currency: 'GBP', currencySymbol: '£', conversionRate: 0.79 },
-  { code: 'EU', name: 'European Union', currency: 'EUR', currencySymbol: '€', conversionRate: 0.92 },
-  { code: 'CA', name: 'Canada', currency: 'CAD', currencySymbol: 'C$', conversionRate: 1.36 },
-  { code: 'AU', name: 'Australia', currency: 'AUD', currencySymbol: 'A$', conversionRate: 1.53 },
-  { code: 'JP', name: 'Japan', currency: 'JPY', currencySymbol: '¥', conversionRate: 149.5 },
-  { code: 'IN', name: 'India', currency: 'INR', currencySymbol: '₹', conversionRate: 83.2 },
-  { code: 'CN', name: 'China', currency: 'CNY', currencySymbol: '¥', conversionRate: 7.24 },
-  { code: 'BR', name: 'Brazil', currency: 'BRL', currencySymbol: 'R$', conversionRate: 4.98 },
-  { code: 'MX', name: 'Mexico', currency: 'MXN', currencySymbol: 'MX$', conversionRate: 17.1 },
+  {
+    code: 'US',
+    name: 'United States',
+    currency: 'USD',
+    currencySymbol: '$',
+    flag: '🇺🇸',
+    conversionRate: 1,
+  },
+  {
+    code: 'GB',
+    name: 'United Kingdom',
+    currency: 'GBP',
+    currencySymbol: '£',
+    flag: '🇬🇧',
+    conversionRate: 0.79,
+  },
+  {
+    code: 'EU',
+    name: 'European Union',
+    currency: 'EUR',
+    currencySymbol: '€',
+    flag: '🇪🇺',
+    conversionRate: 0.92,
+  },
+  {
+    code: 'CA',
+    name: 'Canada',
+    currency: 'CAD',
+    currencySymbol: 'C$',
+    flag: '🇨🇦',
+    conversionRate: 1.36,
+  },
+  {
+    code: 'AU',
+    name: 'Australia',
+    currency: 'AUD',
+    currencySymbol: 'A$',
+    flag: '🇦🇺',
+    conversionRate: 1.53,
+  },
+  {
+    code: 'JP',
+    name: 'Japan',
+    currency: 'JPY',
+    currencySymbol: '¥',
+    flag: '🇯🇵',
+    conversionRate: 149.5,
+  },
+  {
+    code: 'IN',
+    name: 'India',
+    currency: 'INR',
+    currencySymbol: '₹',
+    flag: '🇮🇳',
+    conversionRate: 83.2,
+  },
+  {
+    code: 'CN',
+    name: 'China',
+    currency: 'CNY',
+    currencySymbol: '¥',
+    flag: '🇨🇳',
+    conversionRate: 7.24,
+  },
+  {
+    code: 'BR',
+    name: 'Brazil',
+    currency: 'BRL',
+    currencySymbol: 'R$',
+    flag: '🇧🇷',
+    conversionRate: 4.98,
+  },
+  {
+    code: 'MX',
+    name: 'Mexico',
+    currency: 'MXN',
+    currencySymbol: 'MX$',
+    flag: '🇲🇽',
+    conversionRate: 17.1,
+  },
 ];
 
 interface CurrencyContextType {

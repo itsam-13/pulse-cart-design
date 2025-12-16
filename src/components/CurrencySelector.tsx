@@ -18,7 +18,10 @@ export default function CurrencySelector() {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm" className="gap-2">
           <Globe className="h-4 w-4" />
-          <span className="hidden sm:inline">{selectedCountry.currency}</span>
+          <span className="hidden sm:inline-flex items-center gap-1">
+            <span>{selectedCountry.flag}</span>
+            <span>{selectedCountry.currency}</span>
+          </span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56 bg-popover z-50">
@@ -34,8 +37,11 @@ export default function CurrencySelector() {
               }`}
             >
               <div className="flex flex-col gap-1 w-full">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">{country.name}</span>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="flex items-center gap-2 font-medium">
+                    <span>{country.flag}</span>
+                    <span>{country.name}</span>
+                  </span>
                   <span className="text-sm text-muted-foreground">
                     {country.currencySymbol}
                   </span>

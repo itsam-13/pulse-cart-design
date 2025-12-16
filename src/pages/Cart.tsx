@@ -1,14 +1,59 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { Input } from '@/components/ui/input';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity, total } = useCart();
-  const { formatPrice } = useCurrency();
+  const { formatPrice, convertPrice, selectedCountry } = useCurrency();
+
+  const [monthlyBudgetUSD, setMonthlyBudgetUSD] = useState<number>(0);
+
+  useEffect(() => {
+    const saved = localStorage.getItem('monthlyBudgetUSD');
+    if (saved) {
+      const parsed = parseFloat(saved);
+      if (!Number.isNaN(parsed)) {
+        setMonthlyBudgetUSD(parsed);
+      }
+    }
+  }, []);
+
+  const handleBudgetChange = (value: string) => {
+    const numeric = parseFloat(value);
+    if (Number.isNaN(numeric) || numeric < 0) {
+      setMonthlyBudgetUSD(0);
+      localStorage.removeItem('monthlyBudgetUSD');
+      return;
+    }
+
+    const valueInUSD = selectedCountry.conversionRate
+      ? numeric / selectedCountry.conversionRate
+      : numeric;
+
+    setMonthlyBudgetUSD(valueInUSD);
+    localStorage.setItem('monthlyBudgetUSD', valueInUSD.toString());
+  };
+
+  const budgetInSelected = monthlyBudgetUSD > 0 ? convertPrice(monthlyBudgetUSD) : 0;
+  const isOverBudget = monthlyBudgetUSD > 0 && total > monthlyBudgetUSD;
+  const remainingUSD = Math.max(monthlyBudgetUSD - total, 0);
+  const budgetUsagePercent =
+    monthlyBudgetUSD > 0 ? Math.min((total / monthlyBudgetUSD) * 100, 999) : 0;
+
+  let budgetHealthColor = 'bg-emerald-500';
+  if (budgetUsagePercent >= 90) {
+    budgetHealthColor = 'bg-red-500';
+  } else if (budgetUsagePercent >= 70) {
+    budgetHealthColor = 'bg-yellow-400';
+  }
 
   if (cart.length === 0) {
     return (
@@ -121,6 +166,73 @@ export default function Cart() {
                   </span>
                 </div>
               </div>
+
+              {/* Purchase Awareness System */}
+              <div className="mt-6 space-y-4">
+                <h3 className="text-lg font-semibold">Purchase Awareness</h3>
+                <div className="space-y-2">
+                  <p className="text-sm text-muted-foreground">
+                    Set a monthly budget to stay in control of your spending.
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">
+                      {selectedCountry.currencySymbol}
+                    </span>
+                    <Input
+                      type="number"
+                      min={0}
+                      step="0.01"
+                      className="h-9"
+                      value={budgetInSelected ? budgetInSelected.toFixed(2) : ''}
+                      onChange={e => handleBudgetChange(e.target.value)}
+                      placeholder="Monthly budget"
+                    />
+                  </div>
+                  {monthlyBudgetUSD > 0 && (
+                    <div className="space-y-1">
+                      <div className="flex justify-between text-xs text-muted-foreground">
+                        <span>Budget health</span>
+                        <span>{budgetUsagePercent.toFixed(0)}%</span>
+                      </div>
+                      <Progress
+                        value={Math.min(budgetUsagePercent, 100)}
+                        className="h-2 bg-muted"
+                      >
+                        {/* Radix progress doesn&apos;t take children, styling via className */}
+                      </Progress>
+                    </div>
+                  )}
+                </div>
+
+                {monthlyBudgetUSD > 0 && (
+                  <div className="space-y-2">
+                    {isOverBudget ? (
+                      <Alert variant="destructive">
+                        <AlertTitle>Budget exceeded</AlertTitle>
+                        <AlertDescription>
+                          Your cart total is above your monthly budget by{' '}
+                          <span className="font-semibold">
+                            {formatPrice(total - monthlyBudgetUSD)}
+                          </span>
+                          . Consider removing some items or lowering quantities.
+                        </AlertDescription>
+                      </Alert>
+                    ) : (
+                      <Alert>
+                        <AlertTitle>Within budget</AlertTitle>
+                        <AlertDescription>
+                          You still have{' '}
+                          <span className="font-semibold">
+                            {formatPrice(remainingUSD)}
+                          </span>{' '}
+                          left in your monthly budget.
+                        </AlertDescription>
+                      </Alert>
+                    )}
+                  </div>
+                )}
+              </div>
+
               <Link to="/checkout">
                 <Button variant="cart" size="lg" className="w-full">
                   Proceed to Checkout

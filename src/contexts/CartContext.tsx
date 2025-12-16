@@ -18,23 +18,44 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
 
   const addToCart = (product: Product) => {
+    const hasSimilarItem = cart.some(
+      item => item.category === product.category && item.id !== product.id,
+    );
+
     setCart(prev => {
       const existingItem = prev.find(item => item.id === product.id);
       if (existingItem) {
         toast({
-          title: "Cart Updated",
+          title: 'Cart Updated',
           description: `${product.name} quantity increased`,
         });
+
+        if (hasSimilarItem) {
+          toast({
+            title: 'Similar item already in cart',
+            description: `You already have similar products in your cart from the ${product.category} category.`,
+          });
+        }
+
         return prev.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + 1 }
             : item
         );
       }
+
       toast({
-        title: "Added to Cart",
+        title: 'Added to Cart',
         description: `${product.name} has been added to your cart`,
       });
+
+      if (hasSimilarItem) {
+        toast({
+          title: 'Similar purchase detected',
+          description: `You already have items from the ${product.category} category in your cart.`,
+        });
+      }
+
       return [...prev, { ...product, quantity: 1 }];
     });
   };

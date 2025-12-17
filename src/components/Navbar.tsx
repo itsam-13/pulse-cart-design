@@ -34,9 +34,11 @@ export default function Navbar() {
     const parsed = parseFloat(saved);
     if (!Number.isNaN(parsed) && parsed > 0) {
       setMonthlyBudgetUSD(parsed);
-      setBudgetInput(parsed.toString());
+      // Convert from USD to the selected currency for display
+      const inSelectedCurrency = parsed * selectedCountry.conversionRate;
+      setBudgetInput(inSelectedCurrency.toFixed(2));
     }
-  }, []);
+  }, [selectedCountry]);
 
   const handleBudgetSave = () => {
     const numeric = parseFloat(budgetInput);
@@ -44,8 +46,10 @@ export default function Navbar() {
       setMonthlyBudgetUSD(null);
       localStorage.removeItem('monthlyBudgetUSD');
     } else {
-      setMonthlyBudgetUSD(numeric);
-      localStorage.setItem('monthlyBudgetUSD', numeric.toString());
+      // Convert from selected currency to USD for storage
+      const inUSD = numeric / selectedCountry.conversionRate;
+      setMonthlyBudgetUSD(inUSD);
+      localStorage.setItem('monthlyBudgetUSD', inUSD.toString());
     }
     setIsDialogOpen(false);
   };

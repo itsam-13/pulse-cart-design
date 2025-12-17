@@ -100,9 +100,12 @@ export default function Navbar() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="budget-input">Monthly Budget (USD)</Label>
+                <div className="space-y-2">
+                    <Label htmlFor="budget-input">Monthly Budget ({selectedCountry.currency})</Label>
                     <div className="flex gap-2">
+                      <span className="flex items-center px-3 py-2 text-sm text-muted-foreground border rounded-md bg-muted">
+                        {selectedCountry.currencySymbol}
+                      </span>
                       <Input
                         id="budget-input"
                         type="number"
@@ -110,7 +113,7 @@ export default function Navbar() {
                         step="0.01"
                         value={budgetInput}
                         onChange={(e) => setBudgetInput(e.target.value)}
-                        placeholder="Enter amount in USD"
+                        placeholder={`Enter amount in ${selectedCountry.currency}`}
                       />
                     </div>
                     <p className="text-xs text-muted-foreground">

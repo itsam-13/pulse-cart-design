@@ -1,18 +1,29 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ShoppingCart, User, Search, Menu, Wallet } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, Wallet, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCart } from '@/contexts/CartContext';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import CurrencySelector from '@/components/CurrencySelector';
 import { useCurrency } from '@/contexts/CurrencyContext';
 
 export default function Navbar() {
   const { itemCount } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
-  const { formatPrice } = useCurrency();
+  const { formatPrice, selectedCountry } = useCurrency();
   const [monthlyBudgetUSD, setMonthlyBudgetUSD] = useState<number | null>(null);
+  const [budgetInput, setBudgetInput] = useState('');
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const categories = ['Pens & Pencils', 'Notebooks', 'Art Supplies', 'Office Supplies', 'School Bags'];
 
@@ -23,8 +34,21 @@ export default function Navbar() {
     const parsed = parseFloat(saved);
     if (!Number.isNaN(parsed) && parsed > 0) {
       setMonthlyBudgetUSD(parsed);
+      setBudgetInput(parsed.toString());
     }
   }, []);
+
+  const handleBudgetSave = () => {
+    const numeric = parseFloat(budgetInput);
+    if (Number.isNaN(numeric) || numeric < 0) {
+      setMonthlyBudgetUSD(null);
+      localStorage.removeItem('monthlyBudgetUSD');
+    } else {
+      setMonthlyBudgetUSD(numeric);
+      localStorage.setItem('monthlyBudgetUSD', numeric.toString());
+    }
+    setIsDialogOpen(false);
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-background border-b">
@@ -55,6 +79,58 @@ export default function Navbar() {
                 <span>{formatPrice(monthlyBudgetUSD)}</span>
               </div>
             )}
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <DialogTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  title="Set purchase limit"
+                >
+                  <Settings className="h-5 w-5" />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Set Monthly Purchase Limit</DialogTitle>
+                  <DialogDescription>
+                    Set a maximum budget limit for your purchases. When you reach this limit, you won't be able to complete payment.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="budget-input">Monthly Budget (USD)</Label>
+                    <div className="flex gap-2">
+                      <Input
+                        id="budget-input"
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        value={budgetInput}
+                        onChange={(e) => setBudgetInput(e.target.value)}
+                        placeholder="Enter amount in USD"
+                      />
+                    </div>
+                    <p className="text-xs text-muted-foreground">
+                      Current limit: {monthlyBudgetUSD ? formatPrice(monthlyBudgetUSD) : 'No limit set'}
+                    </p>
+                  </div>
+                  <div className="flex gap-2 justify-end">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setIsDialogOpen(false);
+                        setBudgetInput(monthlyBudgetUSD?.toString() || '');
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button onClick={handleBudgetSave}>
+                      Save Limit
+                    </Button>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
             <CurrencySelector />
             <Link to="/auth">
               <Button variant="ghost" size="icon">

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,8 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 import { useCart } from '@/contexts/CartContext';
 import { useCurrency } from '@/contexts/CurrencyContext';
 import { toast } from '@/hooks/use-toast';
@@ -17,9 +19,32 @@ export default function Checkout() {
   const { cart, total, clearCart } = useCart();
   const { formatPrice } = useCurrency();
   const [paymentMethod, setPaymentMethod] = useState('card');
+  const [monthlyBudgetUSD, setMonthlyBudgetUSD] = useState<number | null>(null);
+  
+  const orderTotalWithTax = total * 1.1;
+  const isOverBudget = monthlyBudgetUSD !== null && monthlyBudgetUSD > 0 && orderTotalWithTax > monthlyBudgetUSD;
+
+  useEffect(() => {
+    const saved = localStorage.getItem('monthlyBudgetUSD');
+    if (saved) {
+      const parsed = parseFloat(saved);
+      if (!Number.isNaN(parsed) && parsed > 0) {
+        setMonthlyBudgetUSD(parsed);
+      }
+    }
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (isOverBudget) {
+      toast({
+        title: "Order Blocked",
+        description: `Your order total (${formatPrice(orderTotalWithTax)}) exceeds your monthly purchase limit (${formatPrice(monthlyBudgetUSD || 0)}).`,
+        variant: "destructive",
+      });
+      return;
+    }
 
     // Persist a simple buying history snapshot in localStorage (USD-based).
     try {
@@ -31,8 +56,6 @@ export default function Checkout() {
         totalUSD: number;
       }[] = raw ? JSON.parse(raw) : [];
 
-      const orderTotalUSD = total * 1.1; // including the same 10% tax used in UI
-
       parsed.push({
         id: `${Date.now()}`,
         date: new Date().toISOString(),
@@ -43,7 +66,7 @@ export default function Checkout() {
           price: item.price,
           quantity: item.quantity,
         })),
-        totalUSD: orderTotalUSD,
+        totalUSD: orderTotalWithTax,
       });
 
       localStorage.setItem('purchaseHistory', JSON.stringify(parsed));
@@ -164,6 +187,15 @@ export default function Checkout() {
                 <CardTitle>Order Summary</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
+                {isOverBudget && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Budget Exceeded</AlertTitle>
+                    <AlertDescription>
+                      Your order total ({formatPrice(orderTotalWithTax)}) exceeds your monthly purchase limit ({formatPrice(monthlyBudgetUSD || 0)}). Payment cannot be processed.
+                    </AlertDescription>
+                  </Alert>
+                )}
                 <div className="space-y-3">
                   {cart.map(item => (
                     <div key={item.id} className="flex justify-between text-sm">
@@ -194,12 +226,18 @@ export default function Checkout() {
                   <div className="flex justify-between text-lg">
                     <span className="font-bold">Total</span>
                     <span className="font-bold text-primary">
-                      {formatPrice(total * 1.1)}
+                      {formatPrice(orderTotalWithTax)}
                     </span>
                   </div>
                 </div>
-                <Button type="submit" variant="cart" size="lg" className="w-full">
-                  Place Order
+                <Button 
+                  type="submit" 
+                  variant="cart" 
+                  size="lg" 
+                  className="w-full"
+                  disabled={isOverBudget}
+                >
+                  {isOverBudget ? 'Budget Limit Exceeded' : 'Place Order'}
                 </Button>
               </CardContent>
             </Card>

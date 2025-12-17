@@ -164,7 +164,7 @@ export default function Navbar() {
                   {categories.map(category => (
                     <Link
                       key={category}
-                      to={`/products?category=${category.toLowerCase()}`}
+                      to={`/products?category=${encodeURIComponent(category.toLowerCase())}`}
                       className="text-lg hover:text-primary transition-colors"
                     >
                       {category}
@@ -180,7 +180,7 @@ export default function Navbar() {
           {categories.map(category => (
             <Link
               key={category}
-              to={`/products?category=${category.toLowerCase()}`}
+              to={`/products?category=${encodeURIComponent(category.toLowerCase())}`}
               className="text-sm hover:text-primary transition-colors"
             >
               {category}

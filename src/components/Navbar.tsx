@@ -79,16 +79,15 @@ export default function Navbar() {
                 <span>{formatPrice(monthlyBudgetUSD)}</span>
               </div>
             )}
+            <Button
+              variant="ghost"
+              size="icon"
+              title="Set purchase limit"
+              onClick={() => setIsDialogOpen(true)}
+            >
+              <Settings className="h-5 w-5" />
+            </Button>
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  title="Set purchase limit"
-                >
-                  <Settings className="h-5 w-5" />
-                </Button>
-              </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Set Monthly Purchase Limit</DialogTitle>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import ProductCard from '@/components/ProductCard';
 import ProductFilters from '@/components/ProductFilters';
@@ -16,12 +16,16 @@ export default function Products() {
 
   const [sortBy, setSortBy] = useState('price-low');
   const [priceRange, setPriceRange] = useState([0, 500]);
-  const [selectedCategory, setSelectedCategory] = useState<string>(
-    categoryParam || ''
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [minRating, setMinRating] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const { formatPrice } = useCurrency();
+
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam.toLowerCase());
+    }
+  }, [categoryParam]);
 
   const categories = useMemo(
     () =>

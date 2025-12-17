@@ -31,7 +31,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="text-2xl font-bold text-primary">
-            BuyMetrics
+            PulseCart
           </Link>
 
           <div className="hidden md:flex flex-1 max-w-2xl mx-8">

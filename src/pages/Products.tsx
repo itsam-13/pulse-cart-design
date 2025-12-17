@@ -30,6 +30,23 @@ export default function Products() {
     [],
   );
 
+  // Sync URL `category` param to an actual category value from the dataset.
+  useEffect(() => {
+    if (!categoryParam) return;
+
+    const decoded = categoryParam;
+    const match = categories.find(
+      (c) => c.toLowerCase().trim() === decoded.toLowerCase().trim(),
+    );
+
+    if (match) {
+      setSelectedCategory(match);
+    } else {
+      // Fall back to the raw decoded value (keeps behavior predictable)
+      setSelectedCategory(decoded);
+    }
+  }, [categoryParam, categories]);
+
   const formatCategoryLabel = (category: string) =>
     category
       .split(' ')

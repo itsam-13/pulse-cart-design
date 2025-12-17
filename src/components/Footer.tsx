@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-bold mb-4 text-primary">BuyMetrics</h3>
+            <h3 className="text-lg font-bold mb-4 text-primary">PulseCart</h3>
             <p className="text-sm text-muted-foreground">
               Smart shopping insights with every cart. Quality products, data-driven decisions.
             </p>
@@ -53,7 +53,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border mt-8 pt-8 text-center text-sm text-muted-foreground">
-          © 2024 BuyMetrics. All rights reserved.
+          © 2024 PulseCart. All rights reserved.
         </div>
       </div>
     </footer>

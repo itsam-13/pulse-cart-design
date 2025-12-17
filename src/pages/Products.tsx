@@ -21,11 +21,6 @@ export default function Products() {
   const [searchQuery, setSearchQuery] = useState('');
   const { formatPrice } = useCurrency();
 
-  useEffect(() => {
-    if (categoryParam) {
-      setSelectedCategory(categoryParam.toLowerCase());
-    }
-  }, [categoryParam]);
 
   const categories = useMemo(
     () =>
@@ -45,7 +40,8 @@ export default function Products() {
     let filtered = [...products];
 
     if (selectedCategory) {
-      filtered = filtered.filter(p => p.category === selectedCategory);
+      const sel = selectedCategory.toLowerCase();
+      filtered = filtered.filter(p => p.category.toLowerCase() === sel);
     }
 
     if (searchQuery.trim()) {
